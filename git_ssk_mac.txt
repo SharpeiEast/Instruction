@@ -1,0 +1,38 @@
+mac安装git之后
+配置git
+终端输入ssh-keygen-t rsa -C "youremail"
+之后会要求确认路径和密码，忘记了这个确认路径是什么东西，教程表示默认回车即可，感觉应该是确认生成ssh-key的路径
+成功之后会在~/下生成.ssh文件夹，进去打开id_rsa.pub (打开方式cat id_rsa.pub)
+也可以open ~/.ssh直接打开文件夹
+复制ssh-key，登录GitHub并添加此ssh-key
+随后终端：ssh -T git@github.com
+如果看到: You've successfully authenticated, but GitHub does not provide shell access表示成功匹配
+
+随后将本地仓库上传到github，这时需要设置username和email
+git config --global user.name "your name"
+git config --global user.email "your email"
+操作完成后
+git config -l
+检验是否成功
+随后切换到本地文件夹
+git init
+进行初始化
+然后添加远程仓库的地址(如果远程仓库没有这个东西行不行，这个东西看来一个文件夹只能用一次)
+git remote add origin git@github.com:yourName/yourRepo.git
+检查和远程仓库的区别
+git status
+git add * (git add <file>)选定要上传的文件
+git commit -m 'first commit'
+git push -u origin master 完成上传
+拉取项目
+git pull origin master
+
+
+
+遗留问题：
+如何通过同步删除git端已有文件（文件夹里有）
+公司的gitlab一个仓库对应多台电脑（账户）又是怎么操作的
+gitlab的pull request在哪里。
+note：
+同一台电脑两个文件夹同时向一个仓库推送看上去不行
+同一台电脑同一文件夹自始至终只能向唯一的一个仓库推送

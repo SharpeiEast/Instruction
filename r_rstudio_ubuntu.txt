@@ -1,0 +1,21 @@
+install r (https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/)
+01 add a new repository over https:
+sudo apt install apt-transport-https software-properties-common
+02 Enable the CRAN repository and add the CRAN GPG key to your system using the following commands:
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+03 Now that the apt repository is added , update the packages list and install the R package by typing:
+sudo apt update
+sudo apt install r-base
+04 Verify the installation was successful
+R --version
+
+install rstudio(https://linuxconfig.org/rstudio-on-ubuntu-18-04-bionic-beaver-linux)
+01 RStudio for Ubuntu system comes as the *.deb install-able package. The easiest way to install DEB file on Ubuntu Linux is by using the gdebi command. In case gdebi is not available on your system you can install it by executing the bellow command:
+$ sudo apt install gdebi-core
+02 Download r-studio from official webpage and then install it with gdebi:
+$ sudo gdebi rstudio-xenial-1.1.442-amd64.deb
+03 Start r-studio by executing:
+$ rstudio
+
+

@@ -1,0 +1,75 @@
+ubuntu18.04安装ROS Melodic
+ros的安装对系统的匹配要求比较苛刻，ubuntu16，18，20系统要分别安装对应的ros版本。其中18系统需要安装ros melodic
+
+具体操作流程如下：
+01
+打开“软件和更新”将ubuntu software中的选项全部勾选，并将菜单中的下载地址设置为清华镜像。
+02
+打开终端设置软件源：
+国外：
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+国内（科大）
+sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.ustc.edu.cn/ros/ubuntu/ $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
+国内（清华）
+sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ $DISTRIB_CODENAME main" > /etc/apt/sources.list.d/ros-latest.list'
+03
+set up your keys:
+官网：
+sudo apt install curl # if you haven't already installed curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+CSDN：
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F42ED6FBAB17C654
+不清楚上面这一步更新密钥是更新什么地方，怎么更新，官网和CSDN上的这两段命令看上去差异很大
+04
+sudo apt updahavete
+sudo apt install ros-melodic-desktop-full
+sudo apt-get install ros-melodic-rqt*（这三句是CSDN查到的，看上去是有时候缺少依赖需要使用，官网没有提及；https://www.clearpathrobotics.com/assets/guides/melodic/ros/Creating%20RQT%20Dashboard.html这个地方有提到，感觉是之后）
+sudo apt-get install ros-melodic-rqt-graph
+sudo apt-get install ros-melodic-rqt-common-plugins
+05
+初始化rosdep。rosdep能够轻松地安装要编译的源代码的系统依赖关系，并且需要在ROS中运行一些核心组件
+sudo rosdep init
+rosdep update
+这两条可能跑不通：https://www.guyuehome.com/12640
+
+06
+加载环境设置文件
+source /opt/ros/melodic/setup.bash (这一条如果不跑catkin_init_workspace可能会报错)
+创建工作目录
+mkdir -p ~/rostest_ws/src
+cd ~/rostest_ws/src
+catkin_init_workspace
+cd ~/rostest_ws/
+catkin_make
+设置环境变量
+sudo apt install net-tools
+gedit ~/.bashrc
+
+# Set ROS melodic
+source /opt/ros/melodic/setup.bash
+也可以：echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc来设置，然后source ~/.bashrc来生效
+source ~/rostest_ws/devel/setup.bash
+ 
+# Set ROS Network
+#ifconfig查看你的电脑ip地址
+export ROS_HOSTNAME=192.168.89.135
+export ROS_MASTER_URI=http://${ROS_HOSTNAME}:11311
+ 
+# Set ROS alias command 快捷指令
+alias cw='cd ~/rostest_ws'
+alias cs='cd ~/rostest_ws/src'
+alias cm='cd ~/rostest_ws && catkin_make'
+
+安装相关辅助工具和其他依赖关系
+sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential
+
+小海龟测试，打开三个终端(不要在rostest_ws中打开终端)：
+roscore
+rosrun turtlesim turtlesim_node
+rosrun turtlesim turtle_teleop_key
+
+参考资料：
+https://blog.csdn.net/qq_41450811/article/details/99079041
+https://blog.csdn.net/haiyinshushe/article/details/84256137
+http://wiki.ros.org/ROS/Installation/UbuntuMirrors
+http://wiki.ros.org/melodic/Installation/Ubuntu
